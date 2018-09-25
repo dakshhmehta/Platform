@@ -5,7 +5,7 @@ return [
     'create page' => 'Seite erstellen',
     'edit page' => 'Bearbeiten einer Seite',
     'name' => 'Name',
-    'status' => 'Status',
+    'slug' => 'Slug',
     'title' => 'Titel',
     'slug' => 'Slug',
     'meta_title' => 'Meta-Titel',

@@ -3,7 +3,6 @@
 namespace Modules\Menu\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Modules\Core\Events\BuildingSidebar;
 use Modules\Core\Events\LoadingBackendTranslations;
 use Modules\Core\Traits\CanGetSidebarClassForModule;
@@ -53,13 +52,6 @@ class MenuServiceProvider extends ServiceProvider
         $this->app['events']->listen(LoadingBackendTranslations::class, function (LoadingBackendTranslations $event) {
             $event->load('menu', array_dot(trans('menu::menu')));
             $event->load('menu-items', array_dot(trans('menu::menu-items')));
-        });
-
-        app('router')->bind('menu', function ($id) {
-            return app(MenuRepository::class)->find($id);
-        });
-        app('router')->bind('menuitem', function ($id) {
-            return app(MenuItemRepository::class)->find($id);
         });
     }
 
@@ -130,9 +122,7 @@ class MenuServiceProvider extends ServiceProvider
                 ]
             );
         } else {
-            $localisedUri = ltrim(parse_url(LaravelLocalization::localizeURL($item->uri), PHP_URL_PATH), '/');
-            $target = $item->link_type != 'external' ? $localisedUri : $item->url;
-
+            $target = $item->link_type != 'external' ? $item->locale . '/' . $item->uri : $item->url;
             $menu->url(
                 $target,
                 $item->title,
