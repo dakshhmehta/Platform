@@ -3,6 +3,7 @@
 namespace spec\Modules\Rarv\Form;
 
 use Illuminate\View\View;
+use Modules\Page\Repositories\PageRepository;
 use Modules\Rarv\Form\Form;
 use Modules\Rarv\Form\FormBuilder;
 use PhpSpec\Laravel\LaravelObjectBehavior;
@@ -11,7 +12,7 @@ class FormBuilderSpec extends LaravelObjectBehavior
 {
     public function form()
     {
-        return new Form('faq');
+        return (new Form('faq'))->setRepository(PageRepository::class);
     }
 
     public function it_is_initializable()
@@ -52,5 +53,10 @@ class FormBuilderSpec extends LaravelObjectBehavior
     public function it_can_handle_form_submission()
     {
         $this->setForm($this->form())->handle();
+    }
+
+    public function it_can_prepare_the_route_if_not_defined()
+    {
+        $this->setForm($this->form())->prepareRoute()->shouldBeString();
     }
 }

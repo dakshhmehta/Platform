@@ -2,6 +2,7 @@
 
 namespace spec\Modules\Rarv\Form;
 
+use Modules\Page\Repositories\PageRepository;
 use Modules\Rarv\Form\Field;
 use Modules\Rarv\Form\Form;
 use PhpSpec\Laravel\LaravelObjectBehavior;
@@ -32,10 +33,11 @@ class FormSpec extends LaravelObjectBehavior
     public function it_can_set_get_field()
     {
     	$questionField = new Field('question', 'normalInput');
-    	$this->setField($questionField)->getField('question')->getName()->shouldBe('question');
+    	$this->setField($questionField)
+            ->getName()->shouldBe('question');
 
     	$this->setField('question', 'normalInput')
-    		->getField('question')->getName()->shouldBe('question');
+    		->getName()->shouldBe('question');
     }
 
     public function it_can_set_get_fields()
@@ -51,5 +53,32 @@ class FormSpec extends LaravelObjectBehavior
     public function it_has_boot_method()
     {
     	$this->boot()->shouldReturn(true);
+    }
+
+    public function it_can_get_set_route()
+    {
+        $this->setRoute('/')->getRoute()->shouldBeString();
+    }
+
+    public function it_can_invalidate_form()
+    {
+        $this->setField('name', 'normalInput')->setRules(['required']);
+
+        $this->validate()->shouldReturn(false);
+        $this->getErrors()->shouldHaveCount(1);
+    }
+
+    public function it_can_validate_form()
+    {
+        $this->setField('name', 'normalInput')->setRules(['required'])->setValue('Daksh');
+
+        $this->validate()->shouldReturn(true);
+        $this->getErrors()->shouldHaveCount(0);
+    }
+
+    public function it_can_set_get_repository()
+    {
+        $this->setRepository('Modules\Page\Repositories\PageRepository')
+            ->getRepository()->shouldBeAnInstanceOf(PageRepository::class);
     }
 }
