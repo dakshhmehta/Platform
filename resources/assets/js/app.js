@@ -28,6 +28,8 @@ Vue.component('EditButton', require('../../../Modules/Core/Assets/js/components/
 Vue.component('TagsInput', require('../../../Modules/Tag/Assets/js/components/TagInput.vue'));
 Vue.component('SingleMedia', require('../../../Modules/Media/Assets/js/components/SingleMedia.vue'));
 Vue.component('MediaManager', require('../../../Modules/Media/Assets/js/components/MediaManager.vue'));
+Vue.component('ri-hello', require('../../../Modules/Contact/Assets/js/components/Hello.vue'));
+
 
 
 const currentLocale = window.AsgardCMS.currentLocale;
