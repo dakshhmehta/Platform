@@ -49848,7 +49848,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(217);
-module.exports = __webpack_require__(639);
+module.exports = __webpack_require__(640);
 
 
 /***/ }),
@@ -49923,10 +49923,11 @@ _vue2.default.component('EditButton', __webpack_require__(622));
 _vue2.default.component('TagsInput', __webpack_require__(625));
 _vue2.default.component('SingleMedia', __webpack_require__(628));
 _vue2.default.component('MediaManager', __webpack_require__(212));
-_vue2.default.component('ri-hello', __webpack_require__(636));
 
 var currentLocale = window.AsgardCMS.currentLocale;
 var adminPrefix = window.AsgardCMS.adminPrefix;
+
+__webpack_require__(639);
 
 function makeBaseUrl() {
     if (window.AsgardCMS.hideDefaultLocaleInURL == 1) {
@@ -121200,15 +121201,48 @@ if (false) {
 }
 
 /***/ }),
-/* 636 */
+/* 636 */,
+/* 637 */,
+/* 638 */,
+/* 639 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _vue = __webpack_require__(18);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.component('product-table', __webpack_require__(648));
+_vue2.default.component('add-product', __webpack_require__(651));
+_vue2.default.component('autocomplete', __webpack_require__(654));
+
+/***/ }),
+/* 640 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 641 */,
+/* 642 */,
+/* 643 */,
+/* 644 */,
+/* 645 */,
+/* 646 */,
+/* 647 */,
+/* 648 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(6)
 /* script */
-var __vue_script__ = __webpack_require__(637)
+var __vue_script__ = __webpack_require__(649)
 /* template */
-var __vue_template__ = __webpack_require__(638)
+var __vue_template__ = __webpack_require__(650)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -121225,7 +121259,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "Modules/Contact/Assets/js/components/Hello.vue"
+Component.options.__file = "Modules/Accounting/Assets/js/components/ProductTable.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -121234,9 +121268,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-020d4b90", Component.options)
+    hotAPI.createRecord("data-v-f6c80dcc", Component.options)
   } else {
-    hotAPI.reload("data-v-020d4b90", Component.options)
+    hotAPI.reload("data-v-f6c80dcc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -121247,15 +121281,36 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 637 */
+/* 649 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -121264,22 +121319,103 @@ Object.defineProperty(exports, "__esModule", {
 //
 
 exports.default = {
-	name: 'ri-hello',
-	props: ['name'],
-	data: function data() {
-		return {};
-	}
+    name: 'hello',
+    data: function data() {
+        return {
+            rows: [{ name: "", item_id: "", quantity: "", price: "", total: "" }],
+            total: 0
+        };
+    },
+
+    methods: {
+        addRow: function addRow() {
+            this.rows.push({ name: "", item_id: "", quantity: "", price: "", total: "" });
+        },
+        updateTotal: function updateTotal() {
+            this.total = 0;
+            var list = [];
+            var sum = 0;
+            $.each(this.rows, function (key, row) {
+                if (row.total != "") {
+                    sum += row.total;
+                }
+            });
+            this.total = sum.toFixed(2);
+        }
+    }
 };
 
 /***/ }),
-/* 638 */
+/* 650 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n\tHi, " + _vm._s(_vm.name) + "\n")])
+  return _c("div", { staticClass: "col-md-12" }, [
+    _c("table", { staticClass: "table table-bordered" }, [
+      _c("thead", [
+        _c(
+          "tr",
+          { staticStyle: { "background-color": "rgb(249, 249, 249)" } },
+          [
+            _vm.rows.length > 1 ? _c("th", [_vm._v("Action")]) : _vm._e(),
+            _vm._v(" "),
+            _c("th", [_vm._v("Name")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Quantity")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Price")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Total")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          _vm._l(_vm.rows, function(row, index) {
+            return _c("add-product", {
+              key: row.id,
+              attrs: { no: index, row: row, rows: _vm.rows }
+            })
+          }),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", { attrs: { colspan: "4" } }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-xs btn-primary",
+                  on: { click: _vm.addRow }
+                },
+                [_c("i", { staticClass: "fa fa-plus" })]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm.rows.length > 1
+              ? _c(
+                  "td",
+                  { staticClass: "text-right", attrs: { colspan: "4" } },
+                  [_c("strong", [_vm._v("Total")])]
+                )
+              : _c(
+                  "td",
+                  { staticClass: "text-right", attrs: { colspan: "3" } },
+                  [_c("strong", [_vm._v("Total")])]
+                ),
+            _vm._v(" "),
+            _c("td", { staticClass: "text-right" }, [_vm._v(_vm._s(_vm.total))])
+          ])
+        ],
+        2
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -121287,15 +121423,716 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-020d4b90", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f6c80dcc", module.exports)
   }
 }
 
 /***/ }),
-/* 639 */
-/***/ (function(module, exports) {
+/* 651 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+var disposed = false
+var normalizeComponent = __webpack_require__(6)
+/* script */
+var __vue_script__ = __webpack_require__(652)
+/* template */
+var __vue_template__ = __webpack_require__(653)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "Modules/Accounting/Assets/js/components/AddProduct.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-435eef49", Component.options)
+  } else {
+    hotAPI.reload("data-v-435eef49", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 652 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+  props: ['rows', 'row', 'no'],
+  data: function data() {
+    return {
+      items: []
+    };
+  },
+  created: function created() {
+    this.$watch('row.name', function (newVal, oldVal) {
+      this.fetchItemDetails(this.row);
+    });
+    this.$watch('row.quantity', function (newVal, oldVal) {
+      if (newVal < 0) {
+        this.row.price = 0;
+      } else {
+        this.calculateTotal(this.row);
+      }
+    });
+
+    this.$watch('row.price', function (newVal, oldVal) {
+      if (newVal < 0) {
+        this.row.total = 0;
+      } else {
+        this.calculateTotal(this.row);
+      }
+    });
+    this.$watch('row.total', function (oldVal, newVal) {
+      this.calculateTotal(this.row);
+      this.updateTotal();
+    });
+  },
+
+  methods: {
+    update: function update(row, product) {
+      row.quantity = product.qty;
+      row.price = product.price;
+      row.name = product.name;
+    },
+    updateTotal: function updateTotal() {
+      this.$parent.updateTotal();
+    },
+
+    calculateTotal: function calculateTotal(row) {
+      row.total = row.quantity * row.price;
+    },
+    removeRow: function removeRow(row) {
+      var index = this.rows.indexOf(row);
+      this.rows.splice(index, 1);
+    },
+    fetchItemDetails: function fetchItemDetails(row) {
+      axios.get('../../accounting/autocomplete?query=' + row.name + '&type=invoice').then(function (response) {
+        this.items = [];
+        var that = this;
+        var products = response.data;
+        $.each(products, function (key, product) {
+          that.items.push(product);
+        });
+      }.bind(this));
+    }
+  },
+  computed: {}
+};
+
+/***/ }),
+/* 653 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _vm.rows.length > 1
+      ? _c("td", [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-xs btn-danger",
+              on: {
+                click: function($event) {
+                  _vm.removeRow(_vm.row)
+                  _vm.updateTotal()
+                }
+              }
+            },
+            [_c("i", { staticClass: "fa fa-trash" })]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "td",
+      [
+        _c("autocomplete", {
+          attrs: {
+            items: _vm.items,
+            required: "",
+            "aria-labelled-by": "productlabel"
+          },
+          on: {
+            set: function($event) {
+              _vm.update(_vm.row, $event)
+            }
+          },
+          model: {
+            value: _vm.row.name,
+            callback: function($$v) {
+              _vm.$set(_vm.row, "name", $$v)
+            },
+            expression: "row.name"
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.row.name,
+              expression: "row.name"
+            }
+          ],
+          attrs: { type: "hidden", name: "name[" + this.no + "]" },
+          domProps: { value: _vm.row.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.row, "name", $event.target.value)
+            }
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("td", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.row.quantity,
+            expression: "row.quantity"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "number",
+          name: "quantity[" + this.no + "]",
+          required: ""
+        },
+        domProps: { value: _vm.row.quantity },
+        on: {
+          change: function($event) {
+            _vm.updateTotal()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.row, "quantity", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.row.price,
+            expression: "row.price"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "number",
+          name: "price[" + this.no + "]",
+          step: "any",
+          min: "0",
+          required: ""
+        },
+        domProps: { value: _vm.row.price },
+        on: {
+          change: function($event) {
+            _vm.updateTotal()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.row, "price", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.row.total,
+            expression: "row.total"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "number",
+          step: "any",
+          min: "0",
+          name: "total[" + this.no + "]",
+          required: "",
+          readonly: ""
+        },
+        domProps: { value: _vm.row.total },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.row, "total", $event.target.value)
+          }
+        }
+      })
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-435eef49", module.exports)
+  }
+}
+
+/***/ }),
+/* 654 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(655)
+}
+var normalizeComponent = __webpack_require__(6)
+/* script */
+var __vue_script__ = __webpack_require__(657)
+/* template */
+var __vue_template__ = __webpack_require__(658)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "Modules/Accounting/Assets/js/components/ProductAutocomplete.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-71533a4c", Component.options)
+  } else {
+    hotAPI.reload("data-v-71533a4c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 655 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(656);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(56)("1f930efe", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-71533a4c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProductAutocomplete.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-71533a4c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProductAutocomplete.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 656 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(55)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.autocomplete {\n  /*position: relative;*/\n}\n.autocomplete-results {\n  padding: 0;\n  margin: 0;\n  border: 1px solid #eeeeee;\n  width: 100%;\n}\n.autocomplete-result {\n  list-style: none;\n  text-align: left;\n  padding: 4px 2px;\n  cursor: pointer;\n}\n.autocomplete-result.is-active,\n.autocomplete-result:hover {\n  background-color: #4aae9b;\n  color: white;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 657 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+  props: {
+    items: {
+      type: Array,
+      required: false,
+      default: function _default() {
+        return [];
+      }
+    },
+    isAsync: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    ariaLabelledBy: {
+      type: String,
+      required: true
+    }
+  },
+
+  data: function data() {
+    return {
+      isOpen: false,
+      results: [],
+      search: "",
+      isLoading: false,
+      arrowCounter: 0,
+      activedescendant: ""
+    };
+  },
+
+
+  methods: {
+    onChange: function onChange() {
+      // Let's warn the parent that a change was made
+      this.$emit("input", this.search);
+
+      // Is the data given by an outside ajax request?
+      if (this.isAsync) {
+        this.isLoading = true;
+      } else {
+        // Let's search our flat array
+        this.filterResults();
+        this.isOpen = true;
+      }
+    },
+    filterResults: function filterResults() {
+      var _this = this;
+
+      this.results = this.items.filter(function (item) {
+        var product = item.name;
+        return product.toLowerCase().indexOf(_this.search.toLowerCase()) > -1;
+      });
+    },
+    setResult: function setResult(result) {
+      this.search = result.name;
+      this.isOpen = false;
+      this.$emit("set", result);
+    },
+    onArrowDown: function onArrowDown(evt) {
+      if (this.isOpen) {
+        if (this.arrowCounter < this.results.length) {
+          this.arrowCounter = this.arrowCounter + 1;
+          this.setActiveDescendent();
+        }
+      }
+    },
+    onArrowUp: function onArrowUp() {
+      if (this.isOpen) {
+        if (this.arrowCounter > 0) {
+          this.arrowCounter = this.arrowCounter - 1;
+          this.setActiveDescendent();
+        }
+      }
+    },
+    onEnter: function onEnter() {
+      this.search = this.results[this.arrowCounter];
+      this.isOpen = false;
+      this.arrowCounter = -1;
+    },
+    handleClickOutside: function handleClickOutside(evt) {
+      if (!this.$el.contains(evt.target)) {
+        this.isOpen = false;
+        this.arrowCounter = -1;
+      }
+    },
+    setActiveDescendent: function setActiveDescendent() {
+      this.activedescendant = this.getId(this.arrowCounter);
+    },
+    isSelected: function isSelected(index) {
+      return index === this.arrowCounter;
+    },
+    getId: function getId(index) {
+      return "result-option-" + index;
+    }
+  },
+  watch: {
+    items: function items(val, oldValue) {
+      // actually compare them
+      if (val.length !== oldValue.length) {
+        this.results = val;
+        this.isLoading = false;
+      }
+    }
+  },
+  mounted: function mounted() {
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  destroyed: function destroyed() {
+    document.removeEventListener("click", this.handleClickOutside);
+  }
+};
+
+/***/ }),
+/* 658 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "autocomplete",
+      attrs: {
+        role: "combobox",
+        "aria-haspopup": "listbox",
+        "aria-expanded": _vm.isOpen
+      }
+    },
+    [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search,
+            expression: "search"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          "aria-multiline": "false",
+          role: "searchbox",
+          "aria-autocomplete": "list",
+          "aria-controls": "autocomplete-results"
+        },
+        domProps: { value: _vm.search },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search = $event.target.value
+            },
+            _vm.onChange
+          ],
+          keyup: [
+            function($event) {
+              if (
+                !("button" in $event) &&
+                _vm._k($event.keyCode, "down", 40, $event.key, [
+                  "Down",
+                  "ArrowDown"
+                ])
+              ) {
+                return null
+              }
+              return _vm.onArrowDown($event)
+            },
+            function($event) {
+              if (
+                !("button" in $event) &&
+                _vm._k($event.keyCode, "up", 38, $event.key, ["Up", "ArrowUp"])
+              ) {
+                return null
+              }
+              return _vm.onArrowUp($event)
+            },
+            function($event) {
+              if (
+                !("button" in $event) &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
+              }
+              return _vm.onEnter($event)
+            }
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "ul",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.isOpen,
+              expression: "isOpen"
+            }
+          ],
+          staticClass: "autocomplete-results",
+          attrs: { id: "autocomplete-results", role: "listbox" }
+        },
+        [
+          _vm.isLoading
+            ? _c("li", { staticClass: "loading" }, [
+                _vm._v("\n        Loading results...\n      ")
+              ])
+            : _vm._l(_vm.results, function(result, i) {
+                return _c(
+                  "li",
+                  {
+                    key: i,
+                    staticClass: "autocomplete-result",
+                    class: { "is-active": _vm.isSelected(i) },
+                    attrs: {
+                      role: "option",
+                      id: _vm.getId(i),
+                      "aria-selected": _vm.isSelected(i)
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.setResult(result)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        " + _vm._s(result.name) + "\n      ")]
+                )
+              })
+        ],
+        2
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-71533a4c", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
