@@ -4,6 +4,7 @@ namespace spec\Modules\Rarv\Table;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Modules\Page\Repositories\PageRepository;
+use Modules\Rarv\Button\Button;
 use Modules\Rarv\Table\Table;
 use PhpSpec\Laravel\LaravelObjectBehavior;
 use Prophecy\Argument;
@@ -39,5 +40,15 @@ class TableSpec extends LaravelObjectBehavior
     {
         $this->addColumn('question')->setRepository(PageRepository::class)
             ->getRecords()->shouldBeAnInstanceOf(LengthAwarePaginator::class);
+    }
+
+    public function it_can_set_get_buttons()
+    {
+        $createBtn = new Button('Create', '/create');
+        $deleteBtn = new Button('Edit', 'edit/1');
+
+        // We have added two buttons, and 1 is system default for create.
+        $this->setButtons([$createBtn, $deleteBtn])->getButtons()->shouldHaveCount(3);
+        $this->addButton($createBtn)->getButtons()->shouldHaveCount(3);
     }
 }

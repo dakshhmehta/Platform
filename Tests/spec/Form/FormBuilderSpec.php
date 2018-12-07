@@ -12,7 +12,7 @@ class FormBuilderSpec extends LaravelObjectBehavior
 {
     public function form()
     {
-        return (new Form('faq'))->setRepository(PageRepository::class);
+        return (new Form('faq.faq'))->setRepository(PageRepository::class);
     }
 
     public function it_is_initializable()

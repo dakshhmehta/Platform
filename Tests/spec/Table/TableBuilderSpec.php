@@ -18,7 +18,7 @@ class TableBuilderSpec extends LaravelObjectBehavior
 
     public function table()
     {
-    	return (new Table('faq'))
+    	return (new Table('faq.faqs'))
     		->setRepository(PageRepository::class) // Fake repository to passes test
     		->addColumn('question');
     }
@@ -42,5 +42,15 @@ class TableBuilderSpec extends LaravelObjectBehavior
     {
     	$this->setTable($this->table())->getHeaders()
     		->shouldBe(['faq::faqs.table.columns.question']);
+    }
+
+    public function it_can_get_correct_module()
+    {
+        $this->setTable($this->table())->getModule()->shouldBe('faq');
+    }
+
+    public function it_can_get_correct_entity()
+    {
+        $this->setTable($this->table())->getEntity()->shouldBe('faqs');
     }
 }

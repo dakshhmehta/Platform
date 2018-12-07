@@ -1,0 +1,17 @@
+6/12/18
+Accounting:
+Add footnote for Invoice / Bill in Accounting setting and display it
+Change Item to "Description of Goods"
+GST State Code to be displayed
+Add Origin company's country / state
+Configurable Invoice/Bill layout file
+Tax Column in Invoice view is missing
+Send EMail / SMS
+
+Product:
+Add HSN Code in Products Management and in Invoice view
+Description field is optional in products
+
+Contact:
+Change the ordering of tabs in the contacts
+Change State/Country field to be dropdown

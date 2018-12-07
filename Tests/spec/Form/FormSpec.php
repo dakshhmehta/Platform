@@ -12,7 +12,7 @@ class FormSpec extends LaravelObjectBehavior
 {
     public function let()
     {
-    	$this->beConstructedWith('faq');
+    	$this->beConstructedWith('faq.faqs');
     }
 
     function it_is_initializable()
@@ -28,6 +28,11 @@ class FormSpec extends LaravelObjectBehavior
     public function it_can_define_module()
     {
     	$this->setModule('faq')->getModule()->shouldBe('faq');
+    }
+
+    public function it_can_return_correct_entity()
+    {
+        $this->getEntity()->shouldBe('faqs');
     }
 
     public function it_can_set_get_field()
