@@ -121370,7 +121370,7 @@ var render = function() {
           [
             _vm.rows.length > 1 ? _c("th", [_vm._v("Action")]) : _vm._e(),
             _vm._v(" "),
-            _c("th", [_vm._v("Name")]),
+            _c("th", [_vm._v("Description of Good")]),
             _vm._v(" "),
             _c("th", [_vm._v("Quantity")]),
             _vm._v(" "),
