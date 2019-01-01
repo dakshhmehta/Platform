@@ -121301,6 +121301,24 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     name: 'hello',
@@ -121308,6 +121326,8 @@ exports.default = {
     data: function data() {
         return {
             rows: [],
+            subtotal: 0,
+            tax: 0,
             total: 0
         };
     },
@@ -121331,24 +121351,32 @@ exports.default = {
             }.bind(this));
         } else {
             // Its create mode.
-            this.rows.push({ name: "", item_id: "", quantity: "", price: "", total: "" });
+            this.rows.push({ name: "", item_id: "", quantity: "", price: "", total: "", tax: {} });
         }
     },
 
     methods: {
         addRow: function addRow() {
-            this.rows.push({ name: "", item_id: "", quantity: "", price: "", total: "" });
+            this.rows.push({ name: "", item_id: "", quantity: "", price: "", total: "", tax: {} });
         },
         updateTotal: function updateTotal() {
             this.total = 0;
             var list = [];
             var sum = 0;
+            var tax = 0;
             $.each(this.rows, function (key, row) {
                 if (row.total != "") {
+                    if (row.tax !== undefined) {
+                        tax += row.total * row.tax.rate / 100;
+                        console.log(tax);
+                    }
                     sum += row.total;
                 }
             });
-            this.total = sum.toFixed(2);
+
+            this.subtotal = sum.toFixed(2);
+            this.tax = tax.toFixed(2);
+            this.total = +this.subtotal + +this.tax;
         }
     }
 };
@@ -121376,6 +121404,8 @@ var render = function() {
             _vm._v(" "),
             _c("th", [_vm._v("Price")]),
             _vm._v(" "),
+            _c("th", [_vm._v("Tax")]),
+            _vm._v(" "),
             _c("th", [_vm._v("Total")])
           ]
         )
@@ -121392,7 +121422,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("tr", [
-            _c("td", { attrs: { colspan: "4" } }, [
+            _c("td", { attrs: { colspan: "5" } }, [
               _c(
                 "a",
                 {
@@ -121402,30 +121432,97 @@ var render = function() {
                 [_c("i", { staticClass: "fa fa-plus" })]
               )
             ])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm.rows.length > 1
-              ? _c(
-                  "td",
-                  { staticClass: "text-right", attrs: { colspan: "4" } },
-                  [_c("strong", [_vm._v("Total")])]
-                )
-              : _c(
-                  "td",
-                  { staticClass: "text-right", attrs: { colspan: "3" } },
-                  [_c("strong", [_vm._v("Total")])]
-                ),
-            _vm._v(" "),
-            _c("td", { staticClass: "text-right" }, [_vm._v(_vm._s(_vm.total))])
           ])
         ],
         2
-      )
+      ),
+      _vm._v(" "),
+      _c("tfoot", [
+        _c("tr", [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("td", { staticClass: "text-right" }, [
+            _vm._v(_vm._s(_vm.subtotal))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("td", { staticClass: "text-right" }, [_vm._v(_vm._s(_vm.tax))])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(2),
+          _vm._v(" "),
+          _c("td", { staticClass: "text-right" }, [_vm._v(_vm._s(_vm.total))])
+        ]),
+        _vm._v(" "),
+        _c(
+          "tr",
+          { staticStyle: { "background-color": "rgb(249, 249, 249)" } },
+          [
+            _vm.rows.length > 1 ? _c("th", [_vm._v("Action")]) : _vm._e(),
+            _vm._v(" "),
+            _c("th", [_vm._v("Description of Good")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Quantity")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Price")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Tax")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Total")])
+          ]
+        )
+      ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "th",
+      {
+        staticClass: "text-right",
+        staticStyle: { "background-color": "rgb(249, 249, 249)" },
+        attrs: { colspan: "4" }
+      },
+      [_c("strong", [_vm._v("Subtotal")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "th",
+      {
+        staticClass: "text-right",
+        staticStyle: { "background-color": "rgb(249, 249, 249)" },
+        attrs: { colspan: "4" }
+      },
+      [_c("strong", [_vm._v("Tax")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "th",
+      {
+        staticClass: "text-right",
+        staticStyle: { "background-color": "rgb(249, 249, 249)" },
+        attrs: { colspan: "4" }
+      },
+      [_c("strong", [_vm._v("Total")])]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -121515,6 +121612,12 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 exports.default = {
   props: ['rows', 'row', 'no'],
@@ -121550,6 +121653,7 @@ exports.default = {
 
   methods: {
     update: function update(row, product) {
+      row.tax = product.tax;
       row.quantity = product.qty;
       row.price = product.price;
       row.name = product.name;
@@ -121560,7 +121664,9 @@ exports.default = {
     },
 
     calculateTotal: function calculateTotal(row) {
-      row.total = row.quantity * row.price;
+      var total = row.quantity * row.price;
+
+      row.total = total;
     },
     removeRow: function removeRow(row) {
       var index = this.rows.indexOf(row);
@@ -121734,6 +121840,60 @@ var render = function() {
               return
             }
             _vm.$set(_vm.row, "price", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.row.tax.rate,
+            expression: "row.tax.rate"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "number",
+          name: "tax[" + this.no + "]",
+          step: "any",
+          min: "0",
+          required: ""
+        },
+        domProps: { value: _vm.row.tax.rate },
+        on: {
+          change: function($event) {
+            _vm.updateTotal()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.row.tax, "rate", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.row.tax.id,
+            expression: "row.tax.id"
+          }
+        ],
+        attrs: { type: "hidden", name: "tax_id[" + this.no + "]" },
+        domProps: { value: _vm.row.tax.id },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.row.tax, "id", $event.target.value)
           }
         }
       })

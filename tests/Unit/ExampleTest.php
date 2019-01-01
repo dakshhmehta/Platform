@@ -8,13 +8,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
+    public function it_can_send_sms_notification()
     {
-        $this->assertTrue(true);
+    	
     }
 }
