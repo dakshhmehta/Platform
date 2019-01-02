@@ -65,6 +65,8 @@ const app = new Vue({
     router,
     i18n,
 });
+window.app = app;
+require('../../../Modules/Rarv/Assets/js/notifications.js');
 
 window.axios.interceptors.response.use(null, (error) => {
     if (error.response === undefined) {

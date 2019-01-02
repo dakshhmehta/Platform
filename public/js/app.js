@@ -49848,7 +49848,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(217);
-module.exports = __webpack_require__(648);
+module.exports = __webpack_require__(649);
 
 
 /***/ }),
@@ -49954,6 +49954,8 @@ var app = new _vue2.default({
     router: router,
     i18n: i18n
 });
+window.app = app;
+__webpack_require__(648);
 
 window.axios.interceptors.response.use(null, function (error) {
     if (error.response === undefined) {
@@ -122330,6 +122332,32 @@ if (false) {
 
 /***/ }),
 /* 648 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+$("a[data-trigger=event]").click(function (e) {
+    e.preventDefault();
+
+    var href = $(this).attr('href');
+
+    $.ajax({
+        method: 'POST',
+        url: '/api/rarv/events/trigger/' + href,
+        success: function success(res) {
+            if (res.errors != false) {
+                app.$notify.error({ title: 'Error!', message: res.message });
+                return false;
+            }
+
+            app.$notify.success({ message: res.message });
+        }
+    });
+});
+
+/***/ }),
+/* 649 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
