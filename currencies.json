@@ -1,0 +1,12 @@
+{
+    "INR": {
+        "name": "Indian Rupee",
+        "code": "INR",
+        "symbol": "\u20b9",
+        "format": "\u20b9 1.00",
+        "exchange_rate": 0,
+        "active": 0,
+        "created_at": "2019-01-04 06:03:04",
+        "updated_at": "2019-01-04 06:03:04"
+    }
+}

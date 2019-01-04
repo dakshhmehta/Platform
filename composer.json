@@ -30,7 +30,6 @@
         "idavoll/flatly-theme": "~3.0",
         "idavoll/adminlte-theme": "~3.0",
 
-        "maatwebsite/excel": "~2",
         "prettus/l5-repository": "^2.6"
     },
     "require-dev": {
@@ -46,7 +45,10 @@
         "league/commonmark": "^0.15.4",
         "predis/predis": "^1.1",
         "phpspec/phpspec": "^4.0",
-        "benconstable/phpspec-laravel": "~4.0"
+        "benconstable/phpspec-laravel": "~4.0",
+
+        "maatwebsite/excel": "~2",
+        "torann/currency": "^1.0"
     },
     "autoload": {
         "classmap": [
