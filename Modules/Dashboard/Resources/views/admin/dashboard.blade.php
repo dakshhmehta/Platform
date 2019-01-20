@@ -21,7 +21,6 @@
 @endpush
 
 @section('content')
-
     <div class="row">
         <div class="col-md-12">
             <div class="grid-stack">
@@ -47,7 +46,6 @@
 @stop
 
 @push('js-stack')
-    @parent
     <script type="text/javascript">
         $(document).ready(function () {
             var options = {
