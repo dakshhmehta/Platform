@@ -53,4 +53,16 @@ class FieldSpec extends LaravelObjectBehavior
     {
         $this->setLabel('Question: ')->getLabel()->shouldBe('Question: ');
     }
+
+    public function it_can_get_set_columns()
+    {
+        $this->setColumn(1)->getColumn()->shouldBe(1);
+    }
+
+    public function it_can_not_set_column_invalid()
+    {
+        $this->shouldThrow()->duringSetColumn('dax');
+        $this->shouldThrow()->duringSetColumn(13);
+        $this->shouldThrow()->duringSetColumn(-1);
+    }
 }
