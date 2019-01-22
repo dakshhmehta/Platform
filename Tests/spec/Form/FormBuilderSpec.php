@@ -59,4 +59,12 @@ class FormBuilderSpec extends LaravelObjectBehavior
     {
         $this->setForm($this->form())->prepareRoute()->shouldBeString();
     }
+
+    public function it_can_not_edit_without_form_model()
+    {
+        $this->setForm($this->form())->setMode('edit')->shouldThrow()->duringHandle();
+        $this->setForm($this->form())->setMode('edit')->shouldThrow()->duringView();
+    }
+
+    // @todo Should populate during view render
 }

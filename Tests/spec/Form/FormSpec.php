@@ -2,6 +2,7 @@
 
 namespace spec\Modules\Rarv\Form;
 
+use Modules\Faq\Entities\Faq;
 use Modules\Page\Repositories\PageRepository;
 use Modules\Rarv\Form\Field;
 use Modules\Rarv\Form\Form;
@@ -85,5 +86,19 @@ class FormSpec extends LaravelObjectBehavior
     {
         $this->setRepository('Modules\Page\Repositories\PageRepository')
             ->getRepository()->shouldBeAnInstanceOf(PageRepository::class);
+    }
+
+    public function it_can_set_the_form_model()
+    {
+        $this->setModel(new Faq(['question' => 'How do you do?']))->getModel()->question->shouldBe('How do you do?');
+    }
+
+    public function it_can_auto_populate_form_values_from_model()
+    {
+        $this->setField('question', 'normalInput')->setRules(['required']);
+        $this->setModel(new Faq(['question' => 'How do you do?']));
+        $this->populateValues();
+
+        $this->getField('question')->getValue()->shouldBe('How do you do?');
     }
 }
