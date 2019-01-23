@@ -1,8 +1,0 @@
-suites:
-  rarv_suit:
-    namespace: Modules\Rarv
-    psr4_prefix: Modules\Rarv
-    src_path: Modules/Rarv
-    spec_path: Tests
-extensions:
-  PhpSpec\Laravel\Extension\LaravelExtension: ~
