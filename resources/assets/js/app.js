@@ -33,6 +33,8 @@ const currentLocale = window.AsgardCMS.currentLocale;
 const adminPrefix = window.AsgardCMS.adminPrefix;
 
 require('../../../Modules/Accounting/Assets/js/components.js');
+require('../../../Modules/Contact/Assets/js/components.js');
+require('../../../Modules/Quotation/Assets/js/components.js');
 
 function makeBaseUrl() {
     if (window.AsgardCMS.hideDefaultLocaleInURL == 1) {

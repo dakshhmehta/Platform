@@ -32,7 +32,9 @@
 
         "prettus/l5-repository": "^2.6",
 
-        "barryvdh/laravel-dompdf": "^0.8.3"
+        "barryvdh/laravel-dompdf": "^0.8.3",
+
+        "milon/barcode": "^5.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

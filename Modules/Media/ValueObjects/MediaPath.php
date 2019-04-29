@@ -35,7 +35,7 @@ class MediaPath
      */
     public function getRelativeUrl()
     {
-        return $this->path;
+        return rtrim($this->path, '/');
     }
 
     public function __toString()
