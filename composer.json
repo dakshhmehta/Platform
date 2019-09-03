@@ -8,6 +8,12 @@
         "laravel",
         "laravel5"
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/romininteractive/Notification.git"
+        }
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -34,7 +40,8 @@
 
         "barryvdh/laravel-dompdf": "^0.8.3",
 
-        "milon/barcode": "^5.3"
+        "milon/barcode": "^5.3",
+        "romininteractive/notification-module": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

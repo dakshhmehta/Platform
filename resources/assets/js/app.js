@@ -32,6 +32,7 @@ Vue.component('MediaManager', require('../../../Modules/Media/Assets/js/componen
 const currentLocale = window.AsgardCMS.currentLocale;
 const adminPrefix = window.AsgardCMS.adminPrefix;
 
+require('../../../Modules/Rarv/Assets/js/components.js');
 require('../../../Modules/Accounting/Assets/js/components.js');
 require('../../../Modules/Contact/Assets/js/components.js');
 require('../../../Modules/Quotation/Assets/js/components.js');
