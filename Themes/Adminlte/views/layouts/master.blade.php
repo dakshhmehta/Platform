@@ -113,6 +113,8 @@
 <?php endif; ?>
 @section('scripts')
 @show
+
 @stack('js-stack')
+
 </body>
 </html>
