@@ -27,7 +27,7 @@
         "idavoll/setting-module": "4.0.x-dev",
         "idavoll/tag-module": "4.0.x-dev",
         "idavoll/translation-module": "4.0.x-dev",
-        "idavoll/user-module": "4.0.x-dev",
+        "romininteractive/user-module": "dev-master",
         "idavoll/workshop-module": "4.0.x-dev"
     },
     "require-dev": {
