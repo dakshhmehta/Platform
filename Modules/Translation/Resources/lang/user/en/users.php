@@ -27,6 +27,8 @@ return [
     'form' => [
         'first-name' => 'First name',
         'last-name' => 'Last name',
+        'username' => 'Username',
+        'mobile_no' => 'Mobile Number',
         'email' => 'Email',
         'status' => 'Status',
         'password' => 'Password',

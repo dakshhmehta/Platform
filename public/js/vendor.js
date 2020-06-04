@@ -3712,7 +3712,9 @@ module.exports = CodeMirrorSpellChecker;
         return;
       }
       if (emptyListRE.test(line)) {
-        if (!/>\s*$/.test(line)) cm.replaceRange("", {
+        var endOfQuote = inQuote && />\s*$/.test(line)
+        var endOfList = !/>\s*$/.test(line)
+        if (endOfQuote || endOfList) cm.replaceRange("", {
           line: pos.line, ch: 0
         }, {
           line: pos.line, ch: pos.ch + 1
@@ -4490,14 +4492,15 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
           for (++i$7; i$7 < len && countsAsLeft.test(types[i$7]); ++i$7) {}
           order.push(new BidiSpan(0, start, i$7));
         } else {
-          var pos = i$7, at = order.length;
+          var pos = i$7, at = order.length, isRTL = direction == "rtl" ? 1 : 0;
           for (++i$7; i$7 < len && types[i$7] != "L"; ++i$7) {}
           for (var j$2 = pos; j$2 < i$7;) {
             if (countsAsNum.test(types[j$2])) {
-              if (pos < j$2) { order.splice(at, 0, new BidiSpan(1, pos, j$2)); }
+              if (pos < j$2) { order.splice(at, 0, new BidiSpan(1, pos, j$2)); at += isRTL; }
               var nstart = j$2;
               for (++j$2; j$2 < i$7 && countsAsNum.test(types[j$2]); ++j$2) {}
               order.splice(at, 0, new BidiSpan(2, nstart, j$2));
+              at += isRTL;
               pos = j$2;
             } else { ++j$2; }
           }
@@ -7555,7 +7558,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
   }
 
   function setScrollTop(cm, val, forceScroll) {
-    val = Math.min(cm.display.scroller.scrollHeight - cm.display.scroller.clientHeight, val);
+    val = Math.max(0, Math.min(cm.display.scroller.scrollHeight - cm.display.scroller.clientHeight, val));
     if (cm.display.scroller.scrollTop == val && !forceScroll) { return }
     cm.doc.scrollTop = val;
     cm.display.scrollbars.setScrollTop(val);
@@ -7565,7 +7568,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
   // Sync scroller and scrollbar, ensure the gutter elements are
   // aligned.
   function setScrollLeft(cm, val, isScroller, forceScroll) {
-    val = Math.min(val, cm.display.scroller.scrollWidth - cm.display.scroller.clientWidth);
+    val = Math.max(0, Math.min(val, cm.display.scroller.scrollWidth - cm.display.scroller.clientWidth));
     if ((isScroller ? val == cm.doc.scrollLeft : Math.abs(cm.doc.scrollLeft - val) < 2) && !forceScroll) { return }
     cm.doc.scrollLeft = val;
     alignHorizontally(cm);
@@ -10501,7 +10504,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
                               text.filter(function (t) { return t != null; }).join(cm.doc.lineSeparator())),
                           origin: "paste"};
             makeChange(cm.doc, change);
-            setSelectionReplaceHistory(cm.doc, simpleSelection(pos, changeEnd(change)));
+            setSelectionReplaceHistory(cm.doc, simpleSelection(clipPos(cm.doc, pos), clipPos(cm.doc, changeEnd(change))));
           })();
         }
       };
@@ -10834,7 +10837,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
   function endOfLine(visually, cm, lineObj, lineNo, dir) {
     if (visually) {
-      if (cm.getOption("direction") == "rtl") { dir = -dir; }
+      if (cm.doc.direction == "rtl") { dir = -dir; }
       var order = getOrder(lineObj, cm.doc.direction);
       if (order) {
         var part = dir < 0 ? lst(order) : order[0];
@@ -11089,7 +11092,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
     var line = getLine(cm.doc, start.line);
     var order = getOrder(line, cm.doc.direction);
     if (!order || order[0].level == 0) {
-      var firstNonWS = Math.max(0, line.text.search(/\S/));
+      var firstNonWS = Math.max(start.ch, line.text.search(/\S/));
       var inWS = pos.line == start.line && pos.ch <= firstNonWS && pos.ch;
       return Pos(start.line, inWS ? 0 : firstNonWS, start.sticky)
     }
@@ -12645,7 +12648,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
     var oldPos = pos;
     var origDir = dir;
     var lineObj = getLine(doc, pos.line);
-    var lineDir = visually && doc.cm && doc.cm.getOption("direction") == "rtl" ? -dir : dir;
+    var lineDir = visually && doc.direction == "rtl" ? -dir : dir;
     function findNextLine() {
       var l = pos.line + lineDir;
       if (l < doc.first || l >= doc.first + doc.size) { return false }
@@ -13738,7 +13741,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.51.0";
+  CodeMirror.version = "5.52.0";
 
   return CodeMirror;
 
@@ -110115,7 +110118,7 @@ var runtime = (function (exports) {
     return { __await: arg };
   };
 
-  function AsyncIterator(generator) {
+  function AsyncIterator(generator, PromiseImpl) {
     function invoke(method, arg, resolve, reject) {
       var record = tryCatch(generator[method], generator, arg);
       if (record.type === "throw") {
@@ -110126,14 +110129,14 @@ var runtime = (function (exports) {
         if (value &&
             typeof value === "object" &&
             hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
             invoke("next", value, resolve, reject);
           }, function(err) {
             invoke("throw", err, resolve, reject);
           });
         }
 
-        return Promise.resolve(value).then(function(unwrapped) {
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
           // When a yielded Promise is resolved, its final value becomes
           // the .value of the Promise<{value,done}> result for the
           // current iteration.
@@ -110151,7 +110154,7 @@ var runtime = (function (exports) {
 
     function enqueue(method, arg) {
       function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
+        return new PromiseImpl(function(resolve, reject) {
           invoke(method, arg, resolve, reject);
         });
       }
@@ -110191,9 +110194,12 @@ var runtime = (function (exports) {
   // Note that simple async functions are implemented on top of
   // AsyncIterator objects; they just return a Promise for the value of
   // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList) {
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
     var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
     );
 
     return exports.isGeneratorFunction(outerFn)
@@ -117782,8 +117788,8 @@ exports.default = plugin;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
- * vue-i18n v8.15.3 
- * (c) 2019 kazuya kawaguchi
+ * vue-i18n v8.15.4 
+ * (c) 2020 kazuya kawaguchi
  * Released under the MIT License.
  */
 /*  */
@@ -119087,7 +119093,7 @@ VueI18n.prototype._getMessages = function _getMessages () { return this._vm.mess
 VueI18n.prototype._getDateTimeFormats = function _getDateTimeFormats () { return this._vm.dateTimeFormats };
 VueI18n.prototype._getNumberFormats = function _getNumberFormats () { return this._vm.numberFormats };
 
-VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm, values) {
+VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm, values, interpolateMode) {
   if (!isNull(result)) { return result }
   if (this._missing) {
     var missingRet = this._missing.apply(null, [locale, key, vm, values]);
@@ -119105,7 +119111,7 @@ VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm,
 
   if (this._formatFallbackMessages) {
     var parsedArgs = parseArgs.apply(void 0, values);
-    return this._render(key, 'string', parsedArgs.params, key)
+    return this._render(key, interpolateMode, parsedArgs.params, key)
   } else {
     return key
   }
@@ -119238,7 +119244,8 @@ VueI18n.prototype._link = function _link (
     }
     translated = this._warnDefault(
       locale, linkPlaceholder, translated, host,
-      Array.isArray(values) ? values : [values]
+      Array.isArray(values) ? values : [values],
+      interpolateMode
     );
 
     if (this._modifiers.hasOwnProperty(formatterName)) {
@@ -119315,7 +119322,7 @@ VueI18n.prototype._t = function _t (key, _locale, messages, host) {
     if (!this._root) { throw Error('unexpected error') }
     return (ref = this._root).$t.apply(ref, [ key ].concat( values ))
   } else {
-    return this._warnDefault(locale, key, ret, host, values)
+    return this._warnDefault(locale, key, ret, host, values, 'string')
   }
 };
 
@@ -119337,7 +119344,7 @@ VueI18n.prototype._i = function _i (key, locale, messages, host, values) {
     if (!this._root) { throw Error('unexpected error') }
     return this._root.$i18n.i(key, locale, values)
   } else {
-    return this._warnDefault(locale, key, ret, host, [values])
+    return this._warnDefault(locale, key, ret, host, [values], 'raw')
   }
 };
 
@@ -119720,7 +119727,7 @@ Object.defineProperty(VueI18n, 'availabilities', {
 });
 
 VueI18n.install = install;
-VueI18n.version = '8.15.3';
+VueI18n.version = '8.15.4';
 
 /* harmony default export */ __webpack_exports__["default"] = (VueI18n);
 
@@ -119810,7 +119817,7 @@ function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functioal component in vue file
+      // register for functional component in vue file
       var originalRender = options.render
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
@@ -119844,7 +119851,7 @@ function normalizeComponent (
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /*!
-  * vue-router v3.1.5
+  * vue-router v3.1.6
   * (c) 2020 Evan You
   * @license MIT
   */
@@ -120787,7 +120794,8 @@ function fillParams (
       (regexpCompileCache[path] = pathToRegexp_1.compile(path));
 
     // Fix #2505 resolving asterisk routes { name: 'not-found', params: { pathMatch: '/not-found' }}
-    if (params.pathMatch) { params[0] = params.pathMatch; }
+    // and fix #3106 so that you can work with location descriptor object having params.pathMatch equal to empty string
+    if (typeof params.pathMatch === 'string') { params[0] = params.pathMatch; }
 
     return filler(params, { pretty: true })
   } catch (e) {
@@ -121535,7 +121543,10 @@ function setupScroll () {
   // location.host contains the port and location.hostname doesn't
   var protocolAndPath = window.location.protocol + '//' + window.location.host;
   var absolutePath = window.location.href.replace(protocolAndPath, '');
-  window.history.replaceState({ key: getStateKey() }, '', absolutePath);
+  // preserve existing history state as it could be overriden by the user
+  var stateCopy = extend({}, window.history.state);
+  stateCopy.key = getStateKey();
+  window.history.replaceState(stateCopy, '', absolutePath);
   window.addEventListener('popstate', function (e) {
     saveScrollPosition();
     if (e.state && e.state.key) {
@@ -122750,7 +122761,7 @@ function createHref (base, fullPath, mode) {
 }
 
 VueRouter.install = install;
-VueRouter.version = '3.1.5';
+VueRouter.version = '3.1.6';
 
 if (inBrowser && window.Vue) {
   window.Vue.use(VueRouter);

@@ -5,7 +5,7 @@
         {{ trans('dashboard::dashboard.name') }}
     </h1>
     <div class="btn-group pull-right">
-        <a class="btn btn-default" id="edit-grid" data-mode="0" href="#">{{ trans('dashboard::dashboard.edit grid') }}</a>
+        <a class="btn btn-default" id="edit-grid" data-mode="0">{{ trans('dashboard::dashboard.edit grid') }}</a>
         <a class="btn btn-default" id="reset-grid" href="{{ route('dashboard.grid.reset')  }}">{{ trans('dashboard::dashboard.reset grid') }}</a>
         <a class="btn btn-default hidden" id="add-widget" data-toggle="modal" data-target="#myModal">{{ trans('dashboard::dashboard.add widget') }}</a>
     </div>
@@ -71,6 +71,20 @@
                         grid.spawn_widget(node);
                         jQuery(jQuery.find('option[value="'+node.id+'"]')[0]).hide();
                     }, this);
+
+                    $('.actionable-select').on('change', (e) => {
+                        var props = {
+                            url: $(e.target).data('url'),
+                            method: $(e.target).data('method') || 'PUT',
+                            name: $(e.target).attr("name"),
+                        }
+
+                        var data = {};
+                        data[props.name] = $(e.target).val();
+                        console.log(data);
+                        
+                        axios.put(props.url, data);
+                    })
                 }.bind(this);
                 this.save_grid = function () {
                     this.serialized_data = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {

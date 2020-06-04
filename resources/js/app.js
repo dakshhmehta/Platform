@@ -23,6 +23,11 @@ require('./mixins');
 
 Vue.component('ckeditor', require('../../Modules/Core/Assets/js/components/CkEditor.vue').default);
 
+require('../../Modules/Rarv/Assets/js/helpers.js');
+require('../../Modules/Rarv/Assets/js/components.js');
+require('../../Modules/CourierTracking/Assets/js/components.js');
+require('../../Modules/Location/Assets/js/components.js');
+
 const { currentLocale, adminPrefix } = window.AsgardCMS;
 
 function makeBaseUrl() {
@@ -33,14 +38,14 @@ function makeBaseUrl() {
 }
 
 const router = new VueRouter({
-        mode: 'history',
-        base: makeBaseUrl(),
-        routes: [
-            ...PageRoutes,
-            ...MediaRoutes,
-            ...UserRoutes,
-        ],
-    }),
+    mode: 'history',
+    base: makeBaseUrl(),
+    routes: [
+        ...PageRoutes,
+        ...MediaRoutes,
+        ...UserRoutes,
+    ],
+}),
     messages = {
         [currentLocale]: window.AsgardCMS.translations,
     },
@@ -53,6 +58,8 @@ const router = new VueRouter({
         router,
         i18n,
     });
+
+    window.app = app;
 
 window.axios.interceptors.response.use(null, (error) => {
     if (error.response === undefined) {
